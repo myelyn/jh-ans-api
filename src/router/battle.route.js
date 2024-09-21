@@ -7,7 +7,7 @@ const BattleRouter = new Router({ prefix: '/battle' })
 
 BattleRouter.post('/', addBattle)
 BattleRouter.delete('/:id', deleteBattle)
-BattleRouter.get('/', showAllBattles)
+BattleRouter.get('/list', showAllBattles)
 BattleRouter.get('/:id', findOneBattle)
 
 module.exports = BattleRouter

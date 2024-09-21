@@ -6,11 +6,20 @@ class BattleService {
     return res.toJSON()
   }
 
-  async findAllBattle() {
-    const res = await Battle.findAll({
-      attributes: [`id`, `startTime`, `endTime`, `ctz`, `mjs`],
+  async findAllBattle(pageNum, pageSize) {
+    const { count, rows } = await Battle.findAndCountAll({
+      attributes: [`id`, `startTime`, `endTime`, `ctz`, `mjs`, `updatedAt`],
+      order: [['updatedAt', 'DESC']],
+      offset: (pageNum - 1) * pageSize,
+      limit: +pageSize
     })
-    return res
+    return {
+      pageNum,
+      pageSize,
+      total: count,
+      totalPage: Math.ceil(count / pageSize),
+      list: rows
+    }
   }
 
   async findOneBattle(id) {

@@ -5,7 +5,7 @@ const computeTags = (playerObj) => {
     ['a', '最强辅助'],
     ['fx', '无私奉献'],
     ['s', '仇恨拉满'],
-    ['s_pl', '霹得妈都不认识'],
+    ['s_pl', '霹得亲妈不认'],
     ['a_jc', '控制拉满'],
     ['a_xh', '无限火力'],
     ['a_xx', '嗜血成性'],
@@ -23,8 +23,8 @@ const computeTags = (playerObj) => {
 
   for (let key of Object.keys(playerObj)) {
     const player = playerObj[key]
-    player.kda = (player.s + player.a + player.k * 20) / (player.d * 20 || 1)
-    player.mscs = player.s / (player.d || 1/3)
+    player.kda = +((player.s + player.a + player.k * 20) / (player.d * 20 || 1)).toFixed(2)
+    player.mscs = +(player.s / (player.d || 1/3)).toFixed(2)
     player.sd = player.s + player.d * 10
     player.fx = player.a - player.k * 10
     player.score = player.s + player.a + player.k * 12 - player.d * 6
@@ -138,10 +138,6 @@ const computeTags = (playerObj) => {
 
     if (player.mscs > 18 && player.mscs < 22 && player.s > 50) {
       player.tags?.push('有点硬')
-    }
-
-    if (player.consume - player.cost > 5000) {
-      player.tags?.push('血赚一个亿')
     }
 
     for(let [indicator] of maxTagMap) {

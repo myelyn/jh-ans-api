@@ -68,8 +68,9 @@ class BattleController {
   }
 
   async showAllBattles(ctx) {
+    const { pageNum=1, pageSize=10 } = ctx.request.query
     try {
-      const res = await findAllBattle()
+      const res = await findAllBattle(pageNum, pageSize)
       ctx.body = {
         code: 0,
         msg:'success',
