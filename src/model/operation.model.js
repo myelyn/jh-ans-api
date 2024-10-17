@@ -1,3 +1,4 @@
+const dayjs = require('dayjs')
 const { DataTypes } = require('sequelize');
 const seq = require('../db/seq')
 
@@ -12,7 +13,10 @@ const operationRecord = seq.define('jh_operation_record', {
   },
   jh_operation_time: {
     type: DataTypes.DATE,
-    allowNull: false
+    allowNull: false,
+    get() {
+      return dayjs(this.getDataValue('jh_operation_time')).format('YYYY-MM-DD HH:mm:ss');
+    }
   },
   jh_operation_detail: {
     type: DataTypes.STRING,

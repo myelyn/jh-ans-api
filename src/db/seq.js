@@ -19,7 +19,7 @@ const testSeq = async () => {
 testSeq()
 
 const syncModel = async () => {
-  // await seq.sync({alter: true});
+  await seq.sync({alter: true});
   console.log("所有模型均已成功同步.");
 }
 

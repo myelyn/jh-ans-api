@@ -30,6 +30,16 @@ class BattlePlayerService {
     return resJson
   }
 
+  async findPlayerBattles (playerId) {
+    const res = await BattlePlayer.findAll({
+      where: {
+        playerId
+      },
+    })
+    const resJson = res.map(p => p.toJSON());
+    return resJson
+  }
+
   async findOneBattlePlayer (battleId, playerId) {
     const res = await BattlePlayer.findOne({
       where: {
@@ -46,7 +56,7 @@ class BattlePlayerService {
         attributes: ['id', 'startTime', 'endTime']
       }]
     })
-    return res.toJSON()
+    return res? res.toJSON() : null
   }
 
   async deleteBattlePlayer(battleId) {

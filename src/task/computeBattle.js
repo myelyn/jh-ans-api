@@ -13,8 +13,8 @@ const computeBattle = async (battle) => {
   const operationData = JSON.parse(await findPeriodOperationRecord(battle))
 
   // 获取选手列表
-  const players = JSON.parse(await findAllPlayer())
-
+  const players = await findAllPlayer()
+  
   // 计算选手数据
   const playerObj = computePlayerDetail(battle, players, killData, operationData)
 
@@ -23,7 +23,6 @@ const computeBattle = async (battle) => {
 
   // 计算标签
   computeTags(playerObj, ctzOverview, mjsOverview)
-
   return {
     playerObj, ctzOverview, mjsOverview
   }

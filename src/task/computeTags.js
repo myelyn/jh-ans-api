@@ -23,8 +23,8 @@ const computeTags = (playerObj) => {
 
   for (let key of Object.keys(playerObj)) {
     const player = playerObj[key]
-    player.kda = +((player.s + player.a + player.k * 20) / (player.d * 20 || 1)).toFixed(2)
-    player.mscs = +(player.s / (player.d || 1/3)).toFixed(2)
+    player.kda = +((player.s + player.a + player.k * 20) / (player.d * 20 || 1)).toFixed(1)
+    player.mscs = +(player.s / (player.d || 1/3)).toFixed(1)
     player.sd = player.s + player.d * 10
     player.fx = player.a - player.k * 10
     player.score = player.s + player.a + player.k * 12 - player.d * 6
@@ -151,7 +151,7 @@ const computeTags = (playerObj) => {
   }
 
   for(let [indicator, name] of maxPlayerMap) {
-    const code = indicator.replace(/\d/g, '')
+    const code = indicator.replace(/ctz/g, '').replace(/mjs/g, '')
     if (code === 's_pl' && playerObj[name].s_pl < 10) continue
     if (code === 'multikill' && playerObj[name].multikill < 10) continue
     if (code === 'k' && playerObj[name].k < 10) continue

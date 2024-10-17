@@ -79,6 +79,11 @@ module.exports = {
     msg: '删除战斗失败',
     result: ''
   },
+  getSameSecondRateError: {
+    code: '30004',
+    msg: '计算同秒率失败',
+    result: ''
+  },
   findBattlePlayerError: {
     code: '40001',
     msg: '查找战斗人员失败',

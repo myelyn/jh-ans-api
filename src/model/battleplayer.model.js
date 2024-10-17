@@ -256,7 +256,26 @@ const BattlePlayer = seq.define('battleplayer', {
       return value ? JSON.parse(value) : []
     },
     comment: '获得称号'
-  }
+  },
+  sameSecondList: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+    get() {
+      const value = this.getDataValue('sameSecondList')
+      return value ? JSON.parse(value) : []
+    },
+    comment: '同秒的操作记录'
+  },
+  sameSecondRate: {
+    type: DataTypes.FLOAT,
+    allowNull: true,
+    comment: '同秒率'
+  },
+  sendNumber: {
+    type: DataTypes.BIGINT,
+    allowNull: true,
+    comment: '发言数'
+  },
 }, {
   tableName: 'battle_players'
 })

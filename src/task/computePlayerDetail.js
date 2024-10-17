@@ -1,3 +1,4 @@
+const dayjs = require('dayjs')
 const { find } = require('lodash')
 const { getKillType, getOperationType } = require('../constant/killAndOperTypes')
 
@@ -53,7 +54,11 @@ const computePlayerDetail = (battle, players, killData, operationData) => {
       sd: 0, // 阵亡和承伤综合系数
       fx: 0, // 奉献系数
       score: 0, // 评分
-      tags: []
+      tags: [],
+      timeList: {},
+      sameSecondList: [],
+      sameSecondRate: 0,
+      sendNumber: 0
     }
   })
 
@@ -85,6 +90,9 @@ const computePlayerDetail = (battle, players, killData, operationData) => {
         killerObj.wdo += 1
         killedObj.dyo += 1
       }
+      const formatTime = dayjs(k.jh_kill_time).format('YYYY-MM-DD HH:mm:ss')
+      killerObj.sendNumber += 1
+      killerObj.timeList[formatTime]?.length ? killerObj.timeList[formatTime].push(k) : killerObj.timeList[formatTime] = [k]
     }
   }
   for (let o of operationData) {
@@ -115,8 +123,26 @@ const computePlayerDetail = (battle, players, killData, operationData) => {
           operatedObj.dyo += 1
         }
       }
+      operatorObj.sendNumber += 1
+      const formatTime = dayjs(o.jh_operation_time).format('YYYY-MM-DD HH:mm:ss')
+      operatorObj.timeList[formatTime]?.length ? operatorObj.timeList[formatTime].push(o) : operatorObj.timeList[formatTime] = [o]
     }
   }
+
+
+  // 计算同秒率
+  for (let key of Object.keys(playerObj)) {
+    const player = playerObj[key]
+    Object.keys(player.timeList).forEach(t => {
+      if (player.timeList[t].length >= 2) {
+        player.sameSecondList.push(...player.timeList[t])
+      }
+    })
+    delete player.timeList
+    sameNumber = player.sameSecondList.length
+    player.sameSecondRate = (sameNumber / player.sendNumber).toFixed(2)
+  }
+  
   return playerObj
 }
 

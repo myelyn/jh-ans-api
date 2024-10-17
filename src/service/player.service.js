@@ -22,6 +22,7 @@ class PlayerService {
     })
     return res
   }
+
 }
 
 module.exports = new PlayerService()
