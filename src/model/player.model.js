@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const seq = require('../db/seq')
+const SeasonPlayer = require('./seasonplayer.model')
 
 const Player = seq.define('player', {
   name: {
@@ -37,6 +38,11 @@ const Player = seq.define('player', {
   }
 }, {
   tableName: 'players'
+})
+
+Player.belongsTo(SeasonPlayer, {
+  foreignKey: 'id',
+  as: 'seasonData'
 })
 
 // Player.sync({force: true})

@@ -34,6 +34,11 @@ module.exports = {
     msg: '用户登录失败',
     result: ''
   },
+	getUserInfoError: {
+		code: '10008',
+		msg: '用户信息获取失败',
+		result: ''
+	},
   invalidPasswordError: {
     code: '10008',
     msg: '密码格式不正确',
@@ -52,6 +57,11 @@ module.exports = {
   tokenInvalidError: {
     code: '10102',
     msg: '无效的token',
+    result: ''
+  },
+  managerAuthError: {
+    code: '10201',
+    msg: '不是管理员，不可以操作',
     result: ''
   },
   createPlayerError: {

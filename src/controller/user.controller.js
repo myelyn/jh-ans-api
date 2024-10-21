@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { createUser, getUserInfo, updateById } = require('../service/user.service')
-const { userCreateError, userLoginError, modifyPasswordError } = require('../constant/err.type')
+const { userCreateError, userLoginError, modifyPasswordError, getUserInfoError } = require('../constant/err.type')
 const { JWT_SECRET } = require('../config/config.default')
 
 class UserController {
@@ -53,6 +53,20 @@ class UserController {
     }
     await next()
   }
+	async userInfo (ctx, next) {
+		const { username, id } = ctx.request.body
+		try {
+		  const { password, ...res } = await getUserInfo({username, id})
+		  ctx.body = {
+		    code: 0,
+		    msg: '操作成功',
+		    result: res
+		  }
+		} catch(e) {
+		  return ctx.app.emit('error', getUserInfoError, ctx)
+		}
+		await next()
+	}
 }
 
 module.exports = new UserController()

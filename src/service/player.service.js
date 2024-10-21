@@ -1,5 +1,5 @@
 const Player = require('../model/player.model')
-
+const SeasonPlayer = require('../model/seasonplayer.model')
 class PlayerService {
   async createPlayer(obj) {
     const res = await Player.create(obj)
@@ -7,7 +7,12 @@ class PlayerService {
   }
   async findAllPlayer() {
     const res = await Player.findAll({
-      attributes: ['id', 'name', 'roles', 'beforeRoles', 'camp']
+      attributes: ['id', 'name', 'roles', 'beforeRoles', 'camp'],
+      include: [{
+        model: SeasonPlayer,
+        as: 'seasonData',
+        attributes: ['k', 'a', 'mscs', 'sameSecondRate', 'attendanceRate', 'cost']
+      }]
     })
     const resJson = res.map(p => p.toJSON())
     return resJson
@@ -18,7 +23,12 @@ class PlayerService {
       where: {
         id
       },
-      attributes: ['id', 'name', 'roles', 'beforeRoles', 'camp']
+      attributes: ['id', 'name', 'roles', 'beforeRoles', 'camp'],
+      include: [{
+        model: SeasonPlayer,
+        as: 'seasonData',
+        attributes: ['k', 'a', 'mscs', 'sameSecondRate', 'attendanceRate', 'cost']
+      }]
     })
     return res
   }

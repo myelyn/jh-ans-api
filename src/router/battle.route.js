@@ -1,14 +1,14 @@
 const Router = require('koa-router')
 
 const { addBattle, deleteBattle, showAllBattles, findOneBattle, getSameSecondRate } = require('../controller/battle.controller')
-// const { battleLogMiddleware } = require('../middlewares/battlelog.middleware.js')
+const { authentication, manageAuth } = require('../middleware/auth.middleware')
 
 const BattleRouter = new Router({ prefix: '/battle' })
 
-BattleRouter.post('/', addBattle)
-BattleRouter.delete('/:id', deleteBattle)
 BattleRouter.get('/list', showAllBattles)
-BattleRouter.post('/secondrate', getSameSecondRate)
+BattleRouter.post('/', authentication, manageAuth, addBattle)
+BattleRouter.delete('/:id', authentication, manageAuth, deleteBattle)
+BattleRouter.post('/secondrate', authentication, manageAuth, getSameSecondRate)
 BattleRouter.get('/:id', findOneBattle)
 
 module.exports = BattleRouter
