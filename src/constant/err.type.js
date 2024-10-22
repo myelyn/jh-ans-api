@@ -98,5 +98,10 @@ module.exports = {
     code: '40001',
     msg: '查找战斗人员失败',
     result: ''
+  },
+  findAboutInfoError: {
+    code: '50001',
+    msg: '获取关于信息失败',
+    result: ''
   }
 }

@@ -257,24 +257,29 @@ const BattlePlayer = seq.define('battleplayer', {
     },
     comment: '获得称号'
   },
-  sameSecondList: {
+  sendList: {
     type: DataTypes.TEXT,
     allowNull: true,
     get() {
-      const value = this.getDataValue('sameSecondList')
+      const value = this.getDataValue('sendList')
       return value ? JSON.parse(value) : []
     },
-    comment: '同秒的操作记录'
+    comment: '个人操作和杀人记录汇总'
   },
   sameSecondRate: {
     type: DataTypes.FLOAT,
     allowNull: true,
     comment: '同秒率'
   },
-  sendNumber: {
+  sameSecondNumber: {
     type: DataTypes.BIGINT,
     allowNull: true,
-    comment: '发言数'
+    comment: '同秒发言组数'
+  },
+  allDoubleNumber: {
+    type: DataTypes.BIGINT,
+    allowNull: true,
+    comment: '全部双号发言组数'
   },
 }, {
   tableName: 'battle_players'

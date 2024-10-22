@@ -1,5 +1,5 @@
 const dayjs = require('dayjs')
-const { find } = require('lodash')
+const { find, orderBy } = require('lodash')
 const { getKillType, getOperationType } = require('../constant/killAndOperTypes')
 
 const computePlayerDetail = (battle, players, killData, operationData) => {
@@ -55,10 +55,10 @@ const computePlayerDetail = (battle, players, killData, operationData) => {
       fx: 0, // 奉献系数
       score: 0, // 评分
       tags: [],
-      timeList: {},
-      sameSecondList: [],
+      sendList: [],
+      sameSecondNumber: 0,
+      allDoubleNumber: 0,
       sameSecondRate: 0,
-      sendNumber: 0
     }
   })
 
@@ -90,9 +90,17 @@ const computePlayerDetail = (battle, players, killData, operationData) => {
         killerObj.wdo += 1
         killedObj.dyo += 1
       }
-      const formatTime = dayjs(k.jh_kill_time).format('YYYY-MM-DD HH:mm:ss')
-      killerObj.sendNumber += 1
-      killerObj.timeList[formatTime]?.length ? killerObj.timeList[formatTime].push(k) : killerObj.timeList[formatTime] = [k]
+    }
+    // 统计同秒数据
+    if (killer) {
+      const killerObj = playerObj[killer]
+      const timeValue = dayjs(k.jh_kill_time).valueOf()
+      killerObj.sendList.push({
+        by: k.jh_killer_name,
+        to: k.jh_killed_name,
+        time: timeValue,
+        content: k.jh_kill_method
+      })
     }
   }
   for (let o of operationData) {
@@ -123,9 +131,17 @@ const computePlayerDetail = (battle, players, killData, operationData) => {
           operatedObj.dyo += 1
         }
       }
-      operatorObj.sendNumber += 1
-      const formatTime = dayjs(o.jh_operation_time).format('YYYY-MM-DD HH:mm:ss')
-      operatorObj.timeList[formatTime]?.length ? operatorObj.timeList[formatTime].push(o) : operatorObj.timeList[formatTime] = [o]
+    }
+    // 统计同秒数据
+    if (operator) {
+      const operatorObj = playerObj[operator]
+      const timeValue = dayjs(o.jh_operation_time).valueOf()
+      operatorObj.sendList.push({
+        by: o.jh_operation_by,
+        to: o.jh_operation_to,
+        time: timeValue,
+        content: o.jh_operation_detail
+      })
     }
   }
 
@@ -133,16 +149,46 @@ const computePlayerDetail = (battle, players, killData, operationData) => {
   // 计算同秒率
   for (let key of Object.keys(playerObj)) {
     const player = playerObj[key]
-    Object.keys(player.timeList).forEach(t => {
-      if (player.timeList[t].length >= 2) {
-        player.sameSecondList.push(...player.timeList[t])
+    player.sendList = orderBy(player.sendList, ['time'], ['desc'])
+    for(let i=0; i<player.sendList.length - 1; i++) {
+      let item = player.sendList[i]
+      let nextItem = player.sendList[i+1]
+      if (item.time === nextItem.time) {
+        item.isSame = true
+        nextItem.isSame = true
+        player.sameSecondNumber += 2
+        player.allDoubleNumber += 2
+      } 
+    }
+    let cur = 0
+    let next = 0
+    while(cur < player.sendList.length - 1) {
+      next = cur + 1
+      const curItem = player.sendList[cur]
+      const nextItem = player.sendList[next]
+      if (curItem.by === nextItem.by) {
+        cur += 1
+        continue
       }
-    })
-    delete player.timeList
-    sameNumber = player.sameSecondList.length
-    player.sameSecondRate = (sameNumber / player.sendNumber).toFixed(2)
-  }
-  
+      if (curItem.isSame || nextItem.isSame) {
+        cur += 1
+        continue
+      }
+      if (curItem.isDouble || nextItem.isDouble) {
+        cur += 1
+        continue
+      }
+      if (curItem.time - nextItem.time > 3000) {
+        cur += 1
+        continue
+      }
+      curItem.isDouble = true
+      nextItem.isDouble = true
+      cur += 1
+      player.allDoubleNumber += 2
+    }
+    player.sameSecondRate = (player.sameSecondNumber / player.allDoubleNumber).toFixed(2)
+  } 
   return playerObj
 }
 

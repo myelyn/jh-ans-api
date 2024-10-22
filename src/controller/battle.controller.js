@@ -31,7 +31,7 @@ class BattleController {
         Object.keys(player).forEach(key => {
           if (key === 'roles') {
             player[key] = player[key].join(',')
-          } else if (['killNames', 'killByNames', 'operationNames', 'operationByNames', 'tags', 'sameSecondList'].includes(key)) {
+          } else if (['killNames', 'killByNames', 'operationNames', 'operationByNames', 'tags', 'sendList'].includes(key)) {
             player[key] = JSON.stringify(player[key])
           }
         })

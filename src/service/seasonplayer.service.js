@@ -39,7 +39,7 @@ class SeasonPlayerService {
     const battleIdList = filter(allBattle.list, b => {
       return (dayjs(b.endTime).valueOf() - dayjs(b.startTime).valueOf()) < 3600 * 24 * 1000
     }).map(o => o.toJSON().id)
-    console.log(battleIdList)
+
     // 查找全部选手
     const allPlayers = await findAllPlayer()
 
@@ -74,7 +74,7 @@ class SeasonPlayerService {
         updateDatas.sameSecondRate = (updateDatas.sameSecondRate / updateDatas.attendanceNumber).toFixed(2)
         delete updateDatas.attendanceNumber
       }
-  
+      console.log(updateDatas)
       // 更新选手赛季数据到数据库
       await seasonplayer.update(updateDatas, {
         where: {
