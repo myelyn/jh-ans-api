@@ -257,15 +257,15 @@ const BattlePlayer = seq.define('battleplayer', {
     },
     comment: '获得称号'
   },
-  sendList: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-    get() {
-      const value = this.getDataValue('sendList')
-      return value ? JSON.parse(value) : []
-    },
-    comment: '个人操作和杀人记录汇总'
-  },
+  // sendList: {
+  //   type: DataTypes.TEXT,
+  //   allowNull: true,
+  //   get() {
+  //     const value = this.getDataValue('sendList')
+  //     return value ? JSON.parse(value) : []
+  //   },
+  //   comment: '个人操作和杀人记录汇总'
+  // },
   sameSecondRate: {
     type: DataTypes.FLOAT,
     allowNull: true,

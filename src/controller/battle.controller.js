@@ -28,10 +28,11 @@ class BattleController {
       const arr = []
       Object.keys(playerObj).forEach(key => {
         const player = cloneDeep(playerObj[key])
+        delete player.sendList
         Object.keys(player).forEach(key => {
           if (key === 'roles') {
             player[key] = player[key].join(',')
-          } else if (['killNames', 'killByNames', 'operationNames', 'operationByNames', 'tags', 'sendList'].includes(key)) {
+          } else if (['killNames', 'killByNames', 'operationNames', 'operationByNames', 'tags'].includes(key)) {
             player[key] = JSON.stringify(player[key])
           }
         })

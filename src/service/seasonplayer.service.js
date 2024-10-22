@@ -69,12 +69,12 @@ class SeasonPlayerService {
             updateDatas.attendanceNumber += 1
           }
         })
-        updateDatas.attendanceRate = (updateDatas.attendanceNumber / battleIdList.length).toFixed(2)
-        updateDatas.mscs = (updateDatas.mscs / updateDatas.attendanceNumber).toFixed(2)
-        updateDatas.sameSecondRate = (updateDatas.sameSecondRate / updateDatas.attendanceNumber).toFixed(2)
+        updateDatas.attendanceRate = updateDatas.attendanceNumber / (battleIdList.length || 1)
+        updateDatas.mscs = updateDatas.mscs / (updateDatas.attendanceNumber || 1)
+        updateDatas.sameSecondRate = updateDatas.sameSecondRate / (updateDatas.attendanceNumber || 1)
         delete updateDatas.attendanceNumber
+
       }
-      console.log(updateDatas)
       // 更新选手赛季数据到数据库
       await seasonplayer.update(updateDatas, {
         where: {

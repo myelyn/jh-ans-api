@@ -187,7 +187,7 @@ const computePlayerDetail = (battle, players, killData, operationData) => {
       cur += 1
       player.allDoubleNumber += 2
     }
-    player.sameSecondRate = (player.sameSecondNumber / player.allDoubleNumber).toFixed(2)
+    player.sameSecondRate = (player.sameSecondNumber / player.allDoubleNumber)
   } 
   return playerObj
 }
