@@ -33,6 +33,19 @@ class PlayerService {
     return res
   }
 
+  async updateById({ id, name, camp, roles }) {
+    const newPlayer = {}
+    name && Object.assign(newPlayer, {name})
+    camp && Object.assign(newPlayer, {camp})
+    roles && Object.assign(newPlayer, {roles})
+    const res = await Player.update(newPlayer, {
+      where: {
+        id
+      }
+    })
+    return res[0] > 0 ? true : false
+  }
+
 }
 
 module.exports = new PlayerService()

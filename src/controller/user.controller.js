@@ -56,14 +56,14 @@ class UserController {
 	async userInfo (ctx, next) {
 		const { username, id } = ctx.request.body
 		try {
-		  const { password, ...res } = await getUserInfo({username, id})
-		  ctx.body = {
-		    code: 0,
-		    msg: '操作成功',
-		    result: res
-		  }
+    const { password, ...res } = await getUserInfo({username, id})
+      ctx.body = {
+        code: 0,
+        msg: '操作成功',
+        result: res
+      }
 		} catch(e) {
-		  return ctx.app.emit('error', getUserInfoError, ctx)
+      return ctx.app.emit('error', getUserInfoError, ctx)
 		}
 		await next()
 	}

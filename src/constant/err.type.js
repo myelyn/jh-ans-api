@@ -74,6 +74,11 @@ module.exports = {
     msg: '查找玩家失败',
     result: ''
   },
+  updatePlayerError: {
+    code: '20003',
+    msg: '更新玩家失败',
+    result: ''
+  },
   createBattleError: {
     code: '30001',
     msg: '创建战斗失败',
